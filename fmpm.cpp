@@ -414,14 +414,15 @@ int main(int argc, char **argv)
     fmConnectParams_t connectParams;
     connectParams.timeoutMs = 1000; // in milliseconds
     connectParams.version = fmConnectParams_version;
+    connectParams.addressType = NV_FM_API_ADDR_TYPE_UNKNOWN;
 
     memset(connectParams.addressInfo, 0, sizeof(connectParams.addressInfo));
     if (strnlen(mUnixSockPath, MAX_PATH_LEN) > 0) {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mUnixSockPath);
-        connectParams.addressIsUnixSocket = 1;
+        connectParams.addressType = NV_FM_API_ADDR_TYPE_UNIX;
     } else {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mHostname);
-        connectParams.addressIsUnixSocket = 0;
+        connectParams.addressType = NV_FM_API_ADDR_TYPE_INET;
     }
 
     fmReturn = fmConnect(&connectParams, &fmHandle);
